@@ -59,7 +59,6 @@ object OidcJwtVerifier {
         for {
           options <- JwtOptions(signature = false, expiration = false, notBefore = false).asRight[Error]
           header  <- JwtCirce.decodeAll(jwt, options).toEither.bimap(_ => InvalidAccessToken, _._1)
-          _       <- header.typ.filter(_ == "JWT").toRight(InvalidAccessToken)
         } yield header
 
       private def getPublicKeyFromJwk(jwk: JWK): Either[Error, PublicKey] =
